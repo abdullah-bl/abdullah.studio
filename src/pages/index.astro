@@ -2,15 +2,40 @@
 
 ---
 
-<html lang="en">
+<html lang='en'>
 	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
+		<meta charset='utf-8' />
+		<link rel='icon' type='image/svg+xml' href='/favicon.svg' />
+		<meta name='viewport' content='width=device-width' />
+		<meta name='generator' content={Astro.generator} />
 		<title>Astro</title>
 	</head>
-	<body>
-		<h1>Astro</h1>
+	<body class='bg-black'>
+		<div class='grid place-items-center items-center h-screen w-screen'>
+			<div class='grid gap-2 items-center place-items-center'>
+				<span
+					class='flex font-bold text-7xl uppercase gradient-text text-transparent animate-gradient'
+				>
+					Abdullah.studio
+				</span>
+			</div>
+		</div>
 	</body>
 </html>
+
+<style>
+	.gradient-text {
+		background: linear-gradient(
+			to right,
+			#a855f7,
+			#ec4899,
+			#eab308,
+			#ec4899,
+			#a855f7,
+			#ec4899,
+			#eab308
+		);
+		background-size: 300% 300%;
+		background-clip: text;
+	}
+</style>
