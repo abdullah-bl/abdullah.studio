@@ -1,50 +1,24 @@
 ---
-import Main from "../layouts/Main.astro";
-
-
-const skills = [
-	'Frontend Development',
-	'Backend Development',
-]
+import Main from "../layouts/Main.astro"
 ---
 
-<Main title='Home' description='Personal website of Abdullah'>
-	<div class='h-screen w-screen place-items-center  grid'>
+<Main title="Home" description="Personal website of Abdullah">
+  <div class="h-screen w-screen place-items-center grid">
+    <div
+      class="grid gap-2 items-center place-items-center justify-between h-full flex-1"
+    >
+      <div class="flex flex-col gap-1 items-center">
+        <span
+          class="flex font-bold text-black text-5xl font-mono gradient-text animate-gradient"
+        >
+          Abdullah Bl
+        </span>
 
-		<div class='grid gap-2 items-center place-items-center justify-between h-full flex-1'>
-			<div class="flex flex-col gap-1 items-center">
-
-				<span
-				class='flex font-bold  text-black text-5xl font-mono  gradient-text  animate-gradient'
-				>
-				Abdullah Bl
-			</span>
-			
-			<span class='text-xl font-mono text-zinc-700'> Coming Soon... </span>
-		</div>
-			<a href="mailto:mail@abdullah.studio">
-				<span class='text-md font-mono'>
-					Contact Me
-				</span>
-			</a>
-		</div>
-	</div>
+        <span class="text-xl font-mono text-zinc-700"> Coming Soon... </span>
+      </div>
+      <a href="mailto:mail@abdullah.studio">
+        <span class="text-md font-mono"> Contact Me </span>
+      </a>
+    </div>
+  </div>
 </Main>
- 
-<!-- 
-<style>
-	.gradient-text {
-		background: linear-gradient(
-			to top,
-			#a855f7,
-			#ec4899,
-			#eab308,
-			#ec4899,
-			#a855f7,
-			#ec4899,
-			#eab308
-		);
-		background-size: 300% 300%;
-		background-clip: text;
-	}
-</style> -->
