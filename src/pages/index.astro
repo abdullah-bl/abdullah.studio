@@ -1,38 +1,41 @@
 ---
+import Main from "../layouts/Main.astro";
 
+
+const skills = [
+	'Frontend Development',
+	'Backend Development',
+]
 ---
 
-<html lang='en'>
-	<head>
-		<meta charset='utf-8' />
-		<link rel='icon' type='image/svg+xml' href='/favicon.svg' />
-		<meta name='viewport' content='width=device-width' />
-		<meta name='generator' content={Astro.generator} />
-		<title>
-			Abdullah.studio
-		</title>
-		<meta name='description' content='Personal website of Abdullah' />
-	</head>
-	<body class='bg-white'>
-		<div class='grid place-items-center items-center h-screen w-screen'>
-			<div class='grid gap-2 items-center place-items-center'>
-				<span
-					class='flex font-bold lg:text-7xl text-5xl uppercase gradient-text text-transparent animate-gradient'
-				>
-					Abdullah.studio
-				</span>
-				<span class='text-xl'>
-					Coming Soon...
-				</span>
-			</div>
-		</div>
-	</body>
-</html>
+<Main title='Home' description='Personal website of Abdullah'>
+	<div class='h-screen w-screen place-items-center  grid'>
 
+		<div class='grid gap-2 items-center place-items-center justify-between h-full flex-1'>
+			<div class="flex flex-col gap-1 items-center">
+
+				<span
+				class='flex font-bold  text-black text-5xl font-mono  gradient-text  animate-gradient'
+				>
+				Abdullah Bl
+			</span>
+			
+			<span class='text-xl font-mono text-zinc-700'> Coming Soon... </span>
+		</div>
+			<a href="mailto:mail@abdullah.studio">
+				<span class='text-md font-mono'>
+					Contact Me
+				</span>
+			</a>
+		</div>
+	</div>
+</Main>
+ 
+<!-- 
 <style>
 	.gradient-text {
 		background: linear-gradient(
-			to right,
+			to top,
 			#a855f7,
 			#ec4899,
 			#eab308,
@@ -44,4 +47,4 @@
 		background-size: 300% 300%;
 		background-clip: text;
 	}
-</style>
+</style> -->
