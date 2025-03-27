@@ -1,0 +1,8 @@
+---
+import Layout from "../layouts/layout.astro";
+import { Chat } from "../components/chat";
+---
+
+<Layout title="Chat" description="Chat with AI">
+    <Chat client:only="react" />
+</Layout>
