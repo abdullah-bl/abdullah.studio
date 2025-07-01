@@ -1,12 +1,20 @@
-import { CreateWebWorkerMLCEngine, MLCEngine, WebWorkerMLCEngine } from "@mlc-ai/web-llm";
 import { useEffect, useState, useRef, useCallback } from "react";
 import { Button } from "../ui/button";
 import { ScrollArea } from "../ui/scroll-area";
-import { Loader2, Send, Square, Info, X } from "lucide-react";
+import { Loader2, Send, Square, Info, X, Badge, Sparkles } from "@/lib/icons";
 import { Textarea } from "../ui/textarea";
 import Markdown from "react-markdown";
 import { cn } from "@/lib/utils";
 import TextareaAutosize from 'react-textarea-autosize';
+import { hasWebGPU } from "@/lib/utils";
+
+// Dynamic imports for heavy ML libraries
+const loadMLCLibraries = async () => {
+    const [{ CreateWebWorkerMLCEngine, MLCEngine, WebWorkerMLCEngine }] = await Promise.all([
+        import("@mlc-ai/web-llm")
+    ]);
+    return { CreateWebWorkerMLCEngine, MLCEngine, WebWorkerMLCEngine };
+};
 
 type ChatMessage = {
     role: "user" | "assistant" | "system"
@@ -20,16 +28,19 @@ type Usage = {
 }
 
 const suggestedQuestions = [
-    "Generate Summary",
-    "Are they a good fit for my job post?",
-    "What is their training style?",
+    "What's the weather like today?",
+    "Help me plan a weekend trip",
+    "Explain quantum computing simply",
+    "Write a short poem about technology",
+    "What are the best productivity tips?",
+    "Tell me a random interesting fact",
 ];
 
 export function Chat() {
     const [messages, setMessages] = useState<ChatMessage[]>([
         { role: "system", content: "You are a helpful assistant." }
     ]);
-    const [engine, setEngine] = useState<WebWorkerMLCEngine | null>(null);
+    const [engine, setEngine] = useState<any>(null);
     const [model, setModel] = useState<string>("SmolLM2-360M-Instruct-q0f32-MLC");
     const [isReady, setIsReady] = useState<boolean>(false);
     const [progress, setProgress] = useState<{ progress: number, text: string, timeElapsed: number }>({ progress: 0, text: "", timeElapsed: 0 });
@@ -38,6 +49,7 @@ export function Chat() {
     const [usage, setUsage] = useState<Usage | null>(null);
     const messagesEndRef = useRef<HTMLDivElement>(null);
     const abortControllerRef = useRef<AbortController | null>(null);
+    const [isWebGPU, setIsWebGPU] = useState(false);
 
     const scrollToBottom = useCallback(() => {
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -48,21 +60,29 @@ export function Chat() {
     }, [messages, scrollToBottom]);
 
     useEffect(() => {
-        loadEngine();
+        if (hasWebGPU()) {
+            setIsWebGPU(true);
+            loadEngine();
+        }
     }, []);
 
     const loadEngine = async () => {
-        const engine = await CreateWebWorkerMLCEngine(
-            new Worker(new URL("../../scripts/chat-worker.ts", import.meta.url), { type: "module" }),
-            model,
-            {
-                initProgressCallback: (progress) => {
-                    setProgress({ progress: progress.progress, text: progress.text, timeElapsed: progress.timeElapsed });
-                },
-            }
-        );
-        setEngine(engine);
-        setIsReady(true);
+        try {
+            const { CreateWebWorkerMLCEngine } = await loadMLCLibraries();
+            const engine = await CreateWebWorkerMLCEngine(
+                new Worker(new URL("../../scripts/workerMLC.ts", import.meta.url), { type: "module" }),
+                model,
+                {
+                    initProgressCallback: (progress) => {
+                        setProgress({ progress: progress.progress, text: progress.text, timeElapsed: progress.timeElapsed });
+                    },
+                }
+            );
+            setEngine(engine);
+            setIsReady(true);
+        } catch (error) {
+            console.error("Failed to load MLC engine:", error);
+        }
     }
 
     const handleStop = () => {
@@ -132,47 +152,60 @@ export function Chat() {
         setInputValue("");
     };
 
-    return (
-        <div className="relative flex flex-col min-h-screen bg-gradient-to-b from-background to-muted/20">
-            <div className="absolute top-4 right-4">
-                <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={handleClear}
-                    className="hover:bg-destructive/10 hover:text-destructive"
-                >
-                    <X className="h-4 w-4" />
-                </Button>
+    if (!isWebGPU) {
+        return (
+            <div className="flex items-center justify-center min-h-screen bg-background">
+                <div className="text-center space-y-4 max-w-md mx-auto p-6">
+                    <div className="w-16 h-16 mx-auto rounded-full bg-muted flex items-center justify-center">
+                        <X className="h-8 w-8 text-muted-foreground" />
+                    </div>
+                    <div className="space-y-2">
+                        <h2 className="text-lg font-medium">WebGPU Not Supported</h2>
+                        <p className="text-sm text-muted-foreground">Please use a Chrome-based browser to access this feature.</p>
+                    </div>
+                </div>
             </div>
-
-            <div className="flex-1 flex flex-col max-w-3xl mx-auto w-full p-4">
+        );
+    }
+    return (
+        <div className="flex flex-col min-h-screen bg-background">
+            <div className="flex-1 flex flex-col max-w-2xl mx-auto w-full p-4">
                 {!isReady ? (
-                    <div className="flex-1 flex flex-col items-center justify-center space-y-4">
-                        <div className="relative w-24 h-24">
-                            <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-green-500 to-emerald-400 blur-lg opacity-50" />
-                            <div className="relative w-full h-full rounded-full bg-gradient-to-tr from-green-500 to-emerald-400 flex items-center justify-center">
-                                <Loader2 className="h-12 w-12 text-white animate-spin" />
+                    <div className="flex-1 flex flex-col items-center justify-center space-y-6">
+                        <div className="relative w-16 h-16">
+                            <div className="absolute inset-0 rounded-full bg-primary/20" />
+                            <div className="relative w-full h-full rounded-full bg-primary flex items-center justify-center">
+                                <Loader2 className="h-8 w-8 text-primary-foreground animate-spin" />
                             </div>
                         </div>
                         <div className="text-center space-y-2">
-                            <p className="text-lg font-medium">Loading model...</p>
+                            <p className="font-medium">Loading model...</p>
                             <p className="text-sm text-muted-foreground">{progress.text}</p>
-                            <p className="text-sm text-muted-foreground">{Math.round(progress.progress * 100)}%</p>
+                            <div className="w-32 h-1 bg-muted rounded-full overflow-hidden">
+                                <div
+                                    className="h-full bg-primary transition-all duration-300"
+                                    style={{ width: `${Math.round(progress.progress * 100)}%` }}
+                                />
+                            </div>
                         </div>
                     </div>
                 ) : messages.length === 1 ? (
                     <div className="flex-1 flex flex-col items-center justify-center space-y-8">
-                        <div className="relative w-24 h-24">
-                            <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-green-500 to-emerald-400 blur-lg opacity-50" />
-                            <div className="relative w-full h-full rounded-full bg-gradient-to-tr from-green-500 to-emerald-400" />
+                        <div className="text-center space-y-4">
+                            <div className="w-16 h-16 mx-auto rounded-full bg-primary/10 flex items-center justify-center">
+                                <Sparkles className="h-8 w-8 text-primary" />
+                            </div>
+                            <div className="space-y-2">
+                                <h1 className="text-2xl font-semibold">How can I help you today?</h1>
+                                <p className="text-muted-foreground">Ask me anything or try one of these suggestions</p>
+                            </div>
                         </div>
-                        <h1 className="text-2xl font-medium text-center">What would you like to know?</h1>
-                        <div className="w-full max-w-md space-y-2">
+                        <div className="w-full max-w-lg space-y-3">
                             {suggestedQuestions.map((question, index) => (
                                 <Button
                                     key={index}
                                     variant="outline"
-                                    className="w-full justify-start text-left h-auto p-4 hover:bg-muted/50"
+                                    className="w-full justify-start text-left h-auto p-4 hover:bg-muted/50 transition-colors"
                                     onClick={() => handleQuestionClick(question)}
                                 >
                                     {question}
@@ -183,7 +216,7 @@ export function Chat() {
                 ) : (
                     <>
                         <ScrollArea className="flex-1 -mx-4 px-4">
-                            <div className="space-y-4 py-4">
+                            <div className="space-y-6 py-4">
                                 {messages.filter(message => message.role !== "system").map((message, index) => (
                                     <div
                                         key={index}
@@ -194,7 +227,7 @@ export function Chat() {
                                     >
                                         <div
                                             className={cn(
-                                                "max-w-[80%] rounded-2xl p-4",
+                                                "max-w-[85%] rounded-2xl px-4 py-3",
                                                 message.role === "user"
                                                     ? "bg-primary text-primary-foreground"
                                                     : "bg-muted"
@@ -205,7 +238,7 @@ export function Chat() {
                                                     components={{
                                                         p: ({ children }) => <p className="mb-2 last:mb-0">{children}</p>,
                                                         pre: ({ children }) => (
-                                                            <pre className="bg-muted/50 p-4 rounded-lg overflow-x-auto my-2">
+                                                            <pre className="bg-muted/50 p-3 rounded-lg overflow-x-auto my-2 text-sm">
                                                                 {children}
                                                             </pre>
                                                         ),
@@ -217,9 +250,9 @@ export function Chat() {
                                                         ul: ({ children }) => <ul className="list-disc pl-4 my-2">{children}</ul>,
                                                         ol: ({ children }) => <ol className="list-decimal pl-4 my-2">{children}</ol>,
                                                         li: ({ children }) => <li className="my-1">{children}</li>,
-                                                        h1: ({ children }) => <h1 className="text-2xl font-bold my-4">{children}</h1>,
-                                                        h2: ({ children }) => <h2 className="text-xl font-bold my-3">{children}</h2>,
-                                                        h3: ({ children }) => <h3 className="text-lg font-bold my-2">{children}</h3>,
+                                                        h1: ({ children }) => <h1 className="text-xl font-bold my-3">{children}</h1>,
+                                                        h2: ({ children }) => <h2 className="text-lg font-bold my-2">{children}</h2>,
+                                                        h3: ({ children }) => <h3 className="text-base font-bold my-2">{children}</h3>,
                                                         blockquote: ({ children }) => (
                                                             <blockquote className="border-l-4 border-muted-foreground/20 pl-4 my-2 italic">
                                                                 {children}
@@ -238,23 +271,23 @@ export function Chat() {
                         </ScrollArea>
 
                         {usage && (
-                            <div className="flex items-center gap-2 text-sm text-muted-foreground my-2">
-                                <Info className="h-4 w-4" />
-                                <span>Tokens: {usage.total_tokens} (prompt: {usage.prompt_tokens}, completion: {usage.completion_tokens})</span>
+                            <div className="flex items-center gap-2 text-xs text-muted-foreground my-2 px-1">
+                                <Info className="h-3 w-3" />
+                                <span>{usage.total_tokens} tokens used</span>
                             </div>
                         )}
                     </>
                 )}
 
-                <form onSubmit={handleSubmit} className="mt-4 flex gap-2 items-end">
+                <form onSubmit={handleSubmit} className="mt-6 flex gap-3 items-end">
                     <div className="relative flex-1">
                         <TextareaAutosize
-                            minRows={2}
-                            maxRows={5}
+                            minRows={1}
+                            maxRows={4}
                             value={inputValue}
                             onChange={(e) => setInputValue(e.target.value)}
-                            placeholder="Ask me anything..."
-                            className="resize-none border w-full rounded-lg border-blue-500/20  px-4 py-3 pr-12"
+                            placeholder="Type your message..."
+                            className="resize-none border w-full rounded-xl px-4 py-3 pr-12 bg-background focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
                             disabled={isGenerating}
                             onKeyDown={(e) => {
                                 if (e.key === 'Enter' && !e.shiftKey) {
@@ -269,8 +302,10 @@ export function Chat() {
                             type={isGenerating ? "button" : "submit"}
                             size="icon"
                             className={cn(
-                                "absolute right-2 top-2 h-10 w-10 rounded-lg transition-colors",
-                                isGenerating ? "bg-destructive hover:bg-destructive/90" : "bg-primary hover:bg-primary/90"
+                                "absolute right-2 top-2 h-8 w-8 rounded-lg transition-all",
+                                isGenerating
+                                    ? "bg-destructive hover:bg-destructive/90 text-destructive-foreground"
+                                    : "bg-primary hover:bg-primary/90 text-primary-foreground"
                             )}
                             onClick={isGenerating ? handleStop : undefined}
                             disabled={!inputValue.trim() && !isGenerating}
@@ -283,6 +318,17 @@ export function Chat() {
                         </Button>
                     </div>
                 </form>
+            </div>
+
+            <div className="absolute top-4 right-4">
+                <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={handleClear}
+                    className="h-8 w-8 hover:bg-muted"
+                >
+                    <X className="h-4 w-4" />
+                </Button>
             </div>
         </div>
     );
