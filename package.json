@@ -8,6 +8,7 @@
 		"lint": "astro lint"
 	},
 	"dependencies": {
+		"@astrojs/cloudflare": "^12.6.0",
 		"@astrojs/mdx": "^4.2.2",
 		"@astrojs/partytown": "^2.1.4",
 		"@astrojs/react": "^4.3.0",
