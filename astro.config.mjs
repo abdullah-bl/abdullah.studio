@@ -12,6 +12,6 @@ export default defineConfig({
         // Reference the separate Vite config for build optimizations
         configFile: './vite.config.js',
     },
-
+    output: "static",
     integrations: [react(), mdx(), partytown()],
 });
