@@ -1,12 +1,16 @@
 import Markdown from "react-markdown";
 import { cn } from "@/lib/utils";
 import type { ChatMessage } from "./types";
+import { Wrench, CheckCircle, AlertCircle } from "lucide-react";
 
 interface MessageProps {
     message: ChatMessage;
 }
 
 export function ChatMessage({ message }: MessageProps) {
+    const isToolMessage = message.role === "tool";
+    const hasToolCalls = message.tool_calls && message.tool_calls.length > 0;
+
     return (
         <div
             className={cn(
@@ -19,9 +23,29 @@ export function ChatMessage({ message }: MessageProps) {
                     "max-w-[85%] rounded-2xl px-4 py-3",
                     message.role === "user"
                         ? "bg-primary text-primary-foreground"
-                        : "bg-muted"
+                        : message.role === "tool"
+                            ? "bg-blue-50 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-800"
+                            : hasToolCalls
+                                ? "bg-yellow-50 dark:bg-yellow-950/20 border border-yellow-200 dark:border-yellow-800"
+                                : "bg-muted"
                 )}
             >
+                {/* Tool call indicator */}
+                {hasToolCalls && (
+                    <div className="flex items-center gap-2 mb-2 text-sm text-yellow-700 dark:text-yellow-300">
+                        <Wrench className="h-4 w-4" />
+                        <span>Tool call: {message.tool_calls![0].function.name}</span>
+                    </div>
+                )}
+
+                {/* Tool result indicator */}
+                {isToolMessage && (
+                    <div className="flex items-center gap-2 mb-2 text-sm text-blue-700 dark:text-blue-300">
+                        <CheckCircle className="h-4 w-4" />
+                        <span>Tool result</span>
+                    </div>
+                )}
+
                 <div className="prose dark:prose-invert max-w-none prose-sm prose-p:leading-relaxed prose-pre:p-0">
                     <Markdown
                         components={{

@@ -38,7 +38,9 @@ export function ChatSettings({ open, onOpenChange }: ChatSettingsProps) {
         setLogprobs,
         modelList,
         setModelList,
-        gpuVendor
+        gpuVendor,
+        enableTools,
+        setEnableTools
     } = useChatStore();
 
     // Initialize model list if empty
@@ -77,6 +79,23 @@ export function ChatSettings({ open, onOpenChange }: ChatSettingsProps) {
                         <p className="text-sm text-muted-foreground">
                             Choose the language model to use for the chat.
                         </p>
+                    </div>
+
+                    {/* Tools Toggle */}
+                    <div className="flex flex-col gap-2">
+                        <Label htmlFor="enable-tools">Enable Tools</Label>
+                        <div className="flex items-center space-x-2">
+                            <input
+                                id="enable-tools"
+                                type="checkbox"
+                                checked={enableTools}
+                                onChange={(e) => setEnableTools(e.target.checked)}
+                                className="rounded border-gray-300"
+                            />
+                            <span className="text-sm text-muted-foreground">
+                                Allow the AI to use tools for calculations, time, weather, and web search
+                            </span>
+                        </div>
                     </div>
 
                     {/* System Prompt */}

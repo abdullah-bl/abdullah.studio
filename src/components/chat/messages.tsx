@@ -22,7 +22,7 @@ export function ChatMessages({ messages, usage }: MessagesProps) {
 
     return (
         <>
-            <ScrollArea className="flex-1">
+            <ScrollArea className="flex-1 overflow-y-auto min-h-0 max-h-full">
                 <div className="space-y-6 py-4">
                     {messages.filter(message => message.role !== "system").map((message, index) => (
                         <ChatMessageComponent key={index} message={message} />

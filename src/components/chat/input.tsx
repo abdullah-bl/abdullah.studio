@@ -6,7 +6,6 @@ import { useChatStore } from "@/stores/chat";
 export function ChatInput() {
     const { input, isGenerating, handleInputChange, handleSubmit, handleStop } = useChatStore();
     const [isComposing, setIsComposing] = useState(false);
-
     const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (isComposing) return;
@@ -23,7 +22,7 @@ export function ChatInput() {
     };
 
     return (
-        <form onSubmit={onSubmit} className="flex items-center gap-2 p-4 bg-background sticky bottom-0">
+        <form onSubmit={onSubmit} className="flex items-center gap-2 bg-background/50 sticky bottom-0 p-2 ">
             <div className="flex-1 relative">
                 <textarea
                     value={input}
@@ -39,7 +38,8 @@ export function ChatInput() {
             </div>
             <Button
                 type="submit"
-                size="icon"
+                size='icon'
+                variant='ghost'
                 disabled={isGenerating ? false : (!input.trim() || isComposing)}
             // className="h-10 w-10"
             >

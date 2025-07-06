@@ -51,8 +51,8 @@ export function Chat() {
 
     return (
         <div className="w-screen h-screen flex flex-col overflow-hidden" >
-            <ChatHeader onClear={handleClear} />
-            <div className="flex-1 flex flex-col max-w-2xl mx-auto w-full">
+            <div className="flex-1 flex flex-col max-w-2xl mx-auto w-full overflow-scroll">
+                <ChatHeader onClear={handleClear} />
                 <div className="flex-1 flex flex-col p-4 min-h-0 overflow-scroll" >
                     {!isReady ? (
                         <ChatLoading progress={progress} />
@@ -64,8 +64,8 @@ export function Chat() {
                     ) : (
                         <ChatMessages messages={messages} usage={usage} />
                     )}
+                    <ChatInput />
                 </div>
-                <ChatInput />
             </div>
         </div>
     );
