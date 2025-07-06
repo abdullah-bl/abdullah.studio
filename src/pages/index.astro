@@ -1,58 +1,33 @@
 ---
 import Layout from "../layouts/layout.astro";
+import Header from "../layouts/header.astro";
+import Glow from "../components/glow";
+import { MessageSquareQuote } from "lucide-react";
 ---
 
 <Layout title="Abdullah Bl" description="Abdullah Bl's portfolio">
-  <main class="min-h-screen bg-white">
-    <div class="max-w-6xl mx-auto px-6 py-16">
+  <main class="min-h-screen bg-white px-3">
+    <Header />
+    <div class="max-w-4xl mx-auto px-0 py-16 flex flex-col gap-16">
       <!-- Header -->
-      <div class="text-center mb-16">
-        <h1 class="text-5xl font-light text-gray-900 mb-4">Abdullah Bl</h1>
-        <p class="text-xl text-gray-600 mb-6">Full Stack Developer</p>
-        <div class="flex justify-center space-x-6">
-          <a
-            href="mailto:mail@abdulla.studio"
-            class="text-gray-500 hover:text-gray-900 transition-colors"
-          >
-            Contact me
-          </a>
-          <a
-            href="https://github.com/abdullah-bl"
-            class="text-gray-500 hover:text-gray-900 transition-colors"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            GitHub
-          </a>
-        </div>
+      <div class="aspect-[9/3] bg-gray-100 rounded-xl relative overflow-hidden">
+        <Glow />
       </div>
 
       <!-- Projects Grid -->
       <div class="mb-16">
-        <h2 class="text-xl font-light text-gray-900 mb-12">Recent Projects</h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <h2 class="text-xl font-light text-gray-900 mb-8">Recent Projects</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <!-- Chat Project -->
           <a href="/chat" class="group">
             <div
-              class="bg-gray-50 hover:bg-gray-100 transition-colors duration-300 p-8 rounded-lg border border-gray-200 hover:border-gray-300"
+              class="transition-colors duration-300 p-8 rounded-lg border border-gray-200 hover:border-gray-300"
             >
               <div class="mb-4">
                 <div
                   class="w-12 h-12 bg-gray-900 rounded-lg flex items-center justify-center mb-4"
                 >
-                  <svg
-                    class="w-6 h-6 text-white"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="1.5"
-                      d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
-                    ></path>
-                  </svg>
+                  <MessageSquareQuote className="w-6 h-6 text-white" />
                 </div>
                 <h3 class="text-xl font-medium text-gray-900 mb-2">Chat</h3>
                 <p class="text-gray-600 text-sm leading-relaxed">

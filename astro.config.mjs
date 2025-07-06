@@ -4,7 +4,6 @@ import mdx from "@astrojs/mdx";
 import partytown from "@astrojs/partytown";
 import tailwindcss from "@tailwindcss/vite";
 
-import cloudflare from "@astrojs/cloudflare";
 
 export default defineConfig({
     vite: {
@@ -14,4 +13,5 @@ export default defineConfig({
     },
     output: "static",
     integrations: [react(), mdx(), partytown()],
+
 });

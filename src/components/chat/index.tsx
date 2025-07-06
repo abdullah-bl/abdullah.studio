@@ -20,7 +20,7 @@ const suggestedQuestions = [
     "Tell me a random interesting fact",
 ];
 
-export function Chat() {
+export default function Chat() {
     const {
         messages,
         isWebGPU,
