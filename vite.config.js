@@ -34,6 +34,10 @@ export default defineConfig({
         exclude: ['@mlc-ai/web-llm', 'kokoro-js', '@browserai/browserai', '@huggingface/transformers'],
         // Include common dependencies for better caching
         include: ['react', 'react-dom', 'lucide-react'],
+        // Handle CommonJS modules properly
+        esbuildOptions: {
+            mainFields: ['module', 'main'],
+        },
     },
     ssr: {
         // Externalize Node.js modules for SSR

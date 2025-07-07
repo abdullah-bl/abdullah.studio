@@ -95,6 +95,30 @@
   background: transparent;
 }
 
+/* Custom scrollbar for audio chunks */
+.custom-scrollbar {
+  scrollbar-width: thin;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 8px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(59, 130, 246, 0.3);
+  border-radius: 4px;
+  transition: background 0.2s ease;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(59, 130, 246, 0.5);
+}
+
 :root {
   --radius: 0.625rem;
   --background: oklch(1 0 0);
