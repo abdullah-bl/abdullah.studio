@@ -4,5 +4,12 @@ import Layout from "@/layouts/layout.astro";
 ---
 
 <Layout title="Speech to Text">
-    <STT client:only="react" />
+    <script type="module">
+        import { pipeline } from "@huggingface/transformers";
+
+        const pipe = await pipeline("text-classification");
+
+        const out = await pipe("I love transformers!");
+        console.log(out);
+    </script>
 </Layout>

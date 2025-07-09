@@ -31,7 +31,7 @@ export default defineConfig({
     },
     optimizeDeps: {
         // Exclude large dependencies from pre-bundling
-        exclude: ['@mlc-ai/web-llm', 'kokoro-js', '@browserai/browserai', '@huggingface/transformers'],
+        exclude: ['@mlc-ai/web-llm', 'kokoro-js', '@browserai/browserai', '@huggingface/transformers', "mammoth"],
         // Include common dependencies for better caching
         include: ['react', 'react-dom', 'lucide-react'],
         // Handle CommonJS modules properly

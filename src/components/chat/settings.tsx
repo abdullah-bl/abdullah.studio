@@ -5,7 +5,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../ui/dialog";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
-import { Select } from "../ui/select";
+import { Select, SelectItem } from "../ui/select";
 import { useChatStore } from "@/stores/chat";
 import React from "react";
 
@@ -71,11 +71,15 @@ export function ChatSettings({ open, onOpenChange }: ChatSettingsProps) {
                     <div className="flex flex-col gap-2">
                         <Label htmlFor="model">Model</Label>
                         <Select
-                            id="model"
                             value={model}
-                            onChange={(e) => setModel(e.target.value)}
-                            options={modelOptions}
-                        />
+                            onValueChange={(value) => setModel(value)}
+                        >
+                            {modelOptions.map((option) => (
+                                <SelectItem className="text-sm" key={option.value} value={option.value}>
+                                    {option.label}
+                                </SelectItem>
+                            ))}
+                        </Select>
                         <p className="text-sm text-muted-foreground">
                             Choose the language model to use for the chat.
                         </p>

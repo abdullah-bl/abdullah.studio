@@ -5,7 +5,7 @@ import Layout from "../../layouts/layout.astro";
 export async function getStaticPaths() {
     const posts = await getCollection("blog");
     return posts.map((post) => ({
-        params: { slug: post.slug },
+        params: { slug: post.id },
         props: { post },
     }));
 }
@@ -18,8 +18,10 @@ const { Content } = await post.render();
     <article class="max-w-4xl mx-auto px-4 py-8">
         <header class="mb-8">
             <h1 class="text-4xl font-bold mb-4">{post.data.title}</h1>
-            <p class="text-lg text-gray-600 mb-4">{post.data.description}</p>
-            <time class="text-sm text-gray-500">
+            <p class="text-lg text-muted-foreground mb-4">
+                {post.data.description}
+            </p>
+            <time class="text-sm text-muted-foreground">
                 {
                     post.data.pubDate.toLocaleDateString("en-US", {
                         year: "numeric",
@@ -44,7 +46,7 @@ const { Content } = await post.render();
 
 <style>
     .prose {
-        @apply text-gray-800;
+        @apply text-foreground;
     }
 
     .prose h1 {
