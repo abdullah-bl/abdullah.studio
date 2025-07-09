@@ -1,0 +1,15 @@
+{
+    "title": "Speech to Text",
+    "description": "Speech to Text is a web app that converts your speech to text in real-time. Built with Next.js and Web Speech API. No data is sent to external servers - everything happens in your browser.",
+    "image": "/images/stt.png",
+    "link": "https://abdullah.studio/stt",
+    "tags": [
+        "Speech",
+        "Text",
+        "Real-time",
+        "Web Speech API"
+    ],
+    "year": 2025,
+    "month": 7,
+    "day": 10
+}
