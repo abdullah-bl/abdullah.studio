@@ -5,20 +5,7 @@ import createMDX from '@next/mdx'
 const nextConfig = {
     experimental: {
         mdxRs: true, // For MDX support
-    },
-    webpack: (config) => {
-        // Handle WebGPU types and other Node.js modules
-        config.resolve.fallback = {
-            ...config.resolve.fallback,
-            fs: false,
-            path: false,
-            os: false,
-            "sharp$": false,
-            "onnxruntime-node$": false,
-        };
-        return config;
-    },
-    // Handle static assets
+    },    // Handle static assets
     images: {
         unoptimized: true, // For static export compatibility
     },
