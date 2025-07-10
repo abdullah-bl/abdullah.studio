@@ -3,6 +3,8 @@ import { Rubik } from 'next/font/google'
 import './globals.css'
 import { ThemeProvider } from '@/components/theme-provider'
 import { Toaster } from 'sonner'
+import { Navbar } from '@/components/nav'
+import Footer from '@/components/footer'
 
 const rubik = Rubik({ subsets: ['latin'] })
 
@@ -19,7 +21,7 @@ export default function RootLayout({
     return (
         <html lang="en" suppressHydrationWarning    >
             <head />
-            <body className={`${rubik.className} bg-background text-foreground `}>
+            <body className={`${rubik.className} bg-background text-foreground p-2`}>
                 <ThemeProvider
                     attribute="class"
                     defaultTheme="dark"
@@ -27,7 +29,9 @@ export default function RootLayout({
                     disableTransitionOnChange
                 >
                     <main className="min-h-screen w-full max-w-2xl mx-auto">
+                        <Navbar />
                         {children}
+                        <Footer />
                     </main>
                     <Toaster />
                 </ThemeProvider>
