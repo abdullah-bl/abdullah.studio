@@ -10,7 +10,7 @@ const navItems = {
   'https://github.com/abdullah-bl': {
     name: 'github',
   },
-  'mailto:abdullah@abdullah.studio': {
+  'mailto:mail@abdullah.studio': {
     name: 'contact me',
   },
 }
