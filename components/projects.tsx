@@ -10,9 +10,20 @@ const projects = [
         year: 2025,
         month: 7,
         day: 10,
-        tags: ['AI', 'Chat', 'Web API'],
+        tags: ['AI', 'Chat', 'Privacy', 'Performance'],
         slug: 'chat',
     },
+    {
+        title: 'Infinite Learning',
+        description: 'a web app that allows you to create micro infinite learning experiences.',
+        image: '/images/infinite.png',
+        link: 'https://abdullah-bl.github.io/Infinite-learning/',
+        year: 2025,
+        month: 8,
+        day: 30,
+        tags: ['Learning', 'Infinite', 'LLMs', 'Privacy'],
+        slug: 'infinite',
+    }
 ]
 
 
