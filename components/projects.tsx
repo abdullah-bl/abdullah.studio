@@ -17,7 +17,7 @@ const projects = [
         title: 'Infinite Learning',
         description: 'a web app that allows you to create micro infinite learning experiences.',
         image: '/images/infinite.png',
-        link: 'https://abdullah-bl.github.io/Infinite-learning/',
+        link: 'https://abdullah-bl.github.io/infinite-learning/',
         year: 2025,
         month: 8,
         day: 30,

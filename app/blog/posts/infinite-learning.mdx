@@ -114,25 +114,6 @@ The interface needed to be simple enough that course generation felt magical:
 
 ## Technical Deep Dive: Making AI Work in the Browser
 
-### Model Loading and Initialization
-
-```javascript
-// Simplified model loading process
-async function loadAIModel() {
-  // Load the quantized model optimized for browser use
-  const model = await loadQuantizedModel('path/to/model');
-  
-  // Initialize with optimized settings for education content
-  await model.initialize({
-    maxTokens: 2048,
-    temperature: 0.7,
-    focusArea: 'educational_content'
-  });
-  
-  return model;
-}
-```
-
 ### Course Generation Logic
 
 The AI doesn't just generate random text - it follows a structured approach:
